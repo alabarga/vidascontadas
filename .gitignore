@@ -1,1 +1,7 @@
-x
+*.pyc
+*.swp
+*~
+local_settings.py
+vidascontadas/vidascontadas/media/
+vidascontadas_db
+vidascontadas/vidascontadas/static
