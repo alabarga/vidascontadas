@@ -13,6 +13,7 @@ class Place(models.Model):
                                    blank=True)
     longitude = models.DecimalField(max_digits=8, decimal_places=5, null=False,
                                    blank=True)
+    medias = models.ManyToManyField('medias.Media')
 
     class Meta:
         verbose_name = _('Place')
