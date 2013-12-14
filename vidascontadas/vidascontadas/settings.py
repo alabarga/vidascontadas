@@ -146,6 +146,7 @@ INSTALLED_APPS = (
     #Internal apps
     'events',
     'medias',
+    'people',
     'places',
     'references',
 )
