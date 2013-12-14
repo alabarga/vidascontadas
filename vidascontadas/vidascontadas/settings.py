@@ -144,8 +144,10 @@ INSTALLED_APPS = (
     'south',
 
     #Internal apps
+    'events',
     'medias',
     'places',
+    'references',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
