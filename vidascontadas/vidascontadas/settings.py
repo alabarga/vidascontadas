@@ -139,8 +139,13 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 
+    #Third apps
+    'cities_light',
+    'south',
+
     #Internal apps
-    'medias'
+    'medias',
+    'places',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
