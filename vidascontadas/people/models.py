@@ -18,6 +18,22 @@ class Relation(models.Model):
         return u'%s, %s  %s' % (unicode(self.relation), unicode(self.person_1),
                                 unicode(self.person_2))
 
+
+class EventPeople(models.Model):
+    role = models.CharField(_('Role'), null=True, blank=True,
+                                max_length=50)
+    people = models.ForeignKey('people.People', related_name='event_people_people')
+    event = models.ForeignKey('events.Event', related_name='event_people_event')
+
+    class Meta:
+        verbose_name = _('Event people')
+        verbose_name_plural = _('Events people')
+
+    def __unicode__(self):
+        return u'%s, %s  %s' % (unicode(self.role), unicode(self.people),
+                                unicode(self.event))
+
+
 class People(models.Model):
     GENRE_CHOICES = (
             ('M', 'Male'),
@@ -45,7 +61,8 @@ class People(models.Model):
                                     default=0)
     references = models.ManyToManyField('references.Reference')
     medias = models.ManyToManyField('medias.Media')
-    relations = models.ManyToManyField('people.Relation')
+    relations = models.ManyToManyField('people.People', through='people.Relation')
+    events = models.ManyToManyField('events.Event', through='people.EventPeople')
 
 
     class Meta:
