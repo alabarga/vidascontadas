@@ -22,8 +22,8 @@ class Relation(models.Model):
 class EventPeople(models.Model):
     role = models.CharField(_('Role'), null=True, blank=True,
                                 max_length=50)
-    people = models.ForeignKey('people.People', related_name='event_people_people')
-    event = models.ForeignKey('events.Event', related_name='event_people_event')
+    people = models.ForeignKey('people.People')
+    event = models.ForeignKey('events.Event')
 
     class Meta:
         verbose_name = _('Event people')
@@ -32,6 +32,21 @@ class EventPeople(models.Model):
     def __unicode__(self):
         return u'%s, %s  %s' % (unicode(self.role), unicode(self.people),
                                 unicode(self.event))
+
+
+class PoliticalActivity(models.Model):
+    role = models.CharField(_('Role'), null=True, blank=True,
+                                max_length=50)
+    people = models.ForeignKey('people.People')
+    affiliation = models.ForeignKey('politician.Affiliation')
+
+    class Meta:
+        verbose_name = _('Political Activity')
+        verbose_name_plural = _('Political activities')
+
+    def __unicode__(self):
+        return u'%s, %s  %s' % (unicode(self.role), unicode(self.people),
+                                unicode(self.affiliation))
 
 
 class People(models.Model):
@@ -63,6 +78,7 @@ class People(models.Model):
     medias = models.ManyToManyField('medias.Media')
     relations = models.ManyToManyField('people.People', through='people.Relation')
     events = models.ManyToManyField('events.Event', through='people.EventPeople')
+    political_activities = models.ManyToManyField('politician.Affiliation', through='people.PoliticalActivity')
 
 
     class Meta:

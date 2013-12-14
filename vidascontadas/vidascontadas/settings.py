@@ -148,6 +148,7 @@ INSTALLED_APPS = (
     'medias',
     'people',
     'places',
+    'politician',
     'references',
 )
 
