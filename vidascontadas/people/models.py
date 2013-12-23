@@ -61,24 +61,34 @@ class People(models.Model):
                                 default=GENRE_CHOICES[0][0], max_length=2)
     profession = models.CharField(_('Profession'), null=False, blank=True,
                                   max_length=75)
-    date_birth = models.DateTimeField(_('Date birth'), null=False, blank=True)
-    date_death = models.DateTimeField(_('Date death'), null=False, blank=True)
+    date_birth = models.ForeignKey('common.CustomDate',
+                                   related_name='dates_birth', null=True)
+    date_death = models.ForeignKey('common.CustomDate',
+                                   related_name='dates_death', null=True)
     death_cause = models.CharField(_('Death cause'), null=False, blank=True,
                                    max_length=100)
-    place_birth = models.ForeignKey('places.Place', related_name='place_births')
-    place_death = models.ForeignKey('places.Place', related_name='place_deaths')
+    place_birth = models.ForeignKey('places.Place', related_name='place_births',
+                                    null=True)
+    place_death = models.ForeignKey('places.Place', related_name='place_deaths',
+                                    null=True)
     burying_place = models.ForeignKey('places.Place',
-                                      related_name='burying_places')
-    address = models.ForeignKey('places.Place', related_name='addreses')
+                                      related_name='burying_places',
+                                      null=True)
+    address = models.ForeignKey('places.Place', related_name='addreses',
+                                null=True)
     married = models.BooleanField(_('Married'), null=False, blank=False,
                                   default=True)
     childrens = models.IntegerField(_('Childrens'), null=False, blank=True,
                                     default=0)
     references = models.ManyToManyField('references.Reference')
     medias = models.ManyToManyField('medias.Media')
-    relations = models.ManyToManyField('people.People', through='people.Relation')
-    events = models.ManyToManyField('events.Event', through='people.EventPeople')
-    political_activities = models.ManyToManyField('politician.Affiliation', through='people.PoliticalActivity')
+    relations = models.ManyToManyField('people.People',
+                                       through='people.Relation')
+    events = models.ManyToManyField('events.Event',
+                                    through='people.EventPeople')
+    political_activities = models.ManyToManyField('politician.Affiliation',
+                                                  through='people.PoliticalActivity')
+    url = models.URLField(_('URL data'), null=False)
 
 
     class Meta:

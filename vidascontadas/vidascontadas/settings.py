@@ -144,6 +144,7 @@ INSTALLED_APPS = (
     'south',
 
     #Internal apps
+    'common',
     'events',
     'medias',
     'people',
