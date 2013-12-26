@@ -10,8 +10,8 @@ from bs4 import BeautifulSoup
 import re
 
 
-class BaseSpider(CrawlSpider):
-    name = 'base'
+class UnavarraSpider(CrawlSpider):
+    name = 'unavarra'
     allowed_domains = ['memoria-oroimena.unavarra.es', ]
 
     start_urls = [
