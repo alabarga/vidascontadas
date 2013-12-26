@@ -3,8 +3,10 @@ from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 
 import scrap.items as items
+from common.models import CustomDate
 
 from bs4 import BeautifulSoup
+
 import re
 
 
@@ -35,21 +37,39 @@ class BaseSpider(CrawlSpider):
 
         ficha = html.find('div', {'class':'ficha_desc'})
 
-        re_born_date_year = re.search( u'A\xf1o: \d{4}', ficha.text,
-                                       re.M|re.I|re.U)
-        date_born_year = int(re.sub('A\xf1o: ', '', re_born_date_year.group()))\
-                    if re_born_date_year else 0
-        re_born_date_month = re.search( u'Mes: \d{1,2}', ficha.text,
-                                       re.M|re.I|re.U)
-        date_born_month = int(re.sub('Mes: ', '', re_born_date_month.group()))\
-                    if re_born_date_month else 0
-        re_born_date_day = re.search( u'D\xeda: \d{1,2}', ficha.text,
-                                       re.M|re.I|re.U)
-        date_born_day = int(re.sub('D\xeda: ', '', re_born_date_day.group()))\
-                    if re_born_date_day else 0
+        #name
+        item['name'] = ficha.find('h2').text
 
+        #genre
+        genre_html = ficha.find('p', 't1').next_element
+        item['genre'] = 'F' if genre_html == 'Mujer'\
+                        else 'M' if genre_html == 'Hombre'\
+                        else 'U'
+
+        #birth date
+        re_birth_date_year = re.search( u'A\xf1o: \d{4}', ficha.text,
+                                       re.M|re.I|re.U)
+        date_birth_year = int(re.sub('A\xf1o: ', '', re_birth_date_year.group()))\
+                    if re_birth_date_year else 0
+        re_birth_date_month = re.search( u'Mes: \d{1,2}', ficha.text,
+                                       re.M|re.I|re.U)
+        date_birth_month = int(re.sub('Mes: ', '', re_birth_date_month.group()))\
+                    if re_birth_date_month else 0
+        re_birth_date_day = re.search( u'D\xeda: \d{1,2}', ficha.text,
+                                       re.M|re.I|re.U)
+        date_birth_day = int(re.sub('D\xeda: ', '', re_birth_date_day.group()))\
+                    if re_birth_date_day else 0
+
+        date_birth, created = CustomDate.objects.get_or_create(
+                               year=date_birth_year,
+                               month=date_birth_month,
+                               day=date_birth_day)
+        date_birth.save()
+        item['date_birth'] = date_birth
 
         item.save()
+
+        print item.fields
 
         return item
 

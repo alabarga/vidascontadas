@@ -51,6 +51,7 @@ class PoliticalActivity(models.Model):
 
 class People(models.Model):
     GENRE_CHOICES = (
+            ('U', 'Unknown'),
             ('M', 'Male'),
             ('F', 'Female'),)
 
