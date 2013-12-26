@@ -13,23 +13,9 @@ class PeopleItem(DjangoItem):
     django_model = people.People
 
     def save(self, commit=True):
-        print "saving"
-        """
-            In next version of scrapy, self.instance will be available
-            with a Djangomodel object, the code must be modified
-
-                if self.instance.pk == self.django_model._meta.get_default():
-                    _saved_obj = self.django_model.__class__.objects.filter(
-                    congress_id=self['congress_id']).values_list(
-                        'id', flat=True)
-                self.instance.pk = _saved_obj[0] if _saved_obj else \
-                    self.django_model._meta.get_default()
-            return super(self.__class__, self).save(commit)
-        """
-        # get saved PK from DB to update data or create a new row
         _saved_obj = self.django_model.objects.filter(
             url=self['url']).values_list(
-                'url', flat=True)
+                'id', flat=True)
         modelargs = dict((k, self.get(k)) for k in self._values
                          if k in self._model_fields)
         model = self.django_model(**modelargs)
