@@ -8,7 +8,7 @@ from common.models import CustomDate
 from bs4 import BeautifulSoup
 
 import re
-
+import csv
 
 class UnavarraSpider(CrawlSpider):
     name = 'unavarra'
@@ -16,6 +16,12 @@ class UnavarraSpider(CrawlSpider):
 
     start_urls = [
             'http://memoria-oroimena.unavarra.es/es/buscar/?pax=1', ]
+
+    ofile  = open('ttest.csv', "wb")
+    writer = csv.writer(ofile, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
+ 
+    for row in reader:
+        writer.writerow(row)    
 
     def location_href_value(value):
         m = re.search("location.href=\'(.*)\'", value)
@@ -67,8 +73,13 @@ class UnavarraSpider(CrawlSpider):
         date_birth.save()
         item['date_birth'] = date_birth
 
+
         item.save()
 
+        row = []
+        row.append(item.fields)
+        
+        self.writer.writerow(row)
         print item.fields
 
         return item
