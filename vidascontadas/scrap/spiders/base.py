@@ -10,6 +10,11 @@ from bs4 import BeautifulSoup
 import re
 
 
+def get_int_from_text(expression, sub, text):
+    re_result = re.search(expression, text, re.M|re.I|re.U)
+    return int(re.sub(sub, '', re_result.group())) if re_result else 0
+
+
 class UnavarraSpider(CrawlSpider):
     name = 'unavarra'
     allowed_domains = ['memoria-oroimena.unavarra.es', ]
@@ -47,25 +52,17 @@ class UnavarraSpider(CrawlSpider):
                         else 'U'
 
         #birth date
-        re_birth_date_year = re.search( u'A\xf1o: \d{4}', ficha.text,
-                                       re.M|re.I|re.U)
-        date_birth_year = int(re.sub('A\xf1o: ', '', re_birth_date_year.group()))\
-                    if re_birth_date_year else 0
-        re_birth_date_month = re.search( u'Mes: \d{1,2}', ficha.text,
-                                       re.M|re.I|re.U)
-        date_birth_month = int(re.sub('Mes: ', '', re_birth_date_month.group()))\
-                    if re_birth_date_month else 0
-        re_birth_date_day = re.search( u'D\xeda: \d{1,2}', ficha.text,
-                                       re.M|re.I|re.U)
-        date_birth_day = int(re.sub('D\xeda: ', '', re_birth_date_day.group()))\
-                    if re_birth_date_day else 0
-
         date_birth, created = CustomDate.objects.get_or_create(
-                               year=date_birth_year,
-                               month=date_birth_month,
-                               day=date_birth_day)
+                 year=get_int_from_text(u'A\xf1o: \d{4}','A\xf1o: ',ficha.text),
+                 month=get_int_from_text(u'Mes: \d{4}','Mes: ',ficha.text),
+                 day=get_int_from_text(u'D\xeda: \d{4}','D\xeda: ',ficha.text))
         date_birth.save()
         item['date_birth'] = date_birth
+
+        #Age
+        item['age'] = get_int_from_text(u'Edad: \d{1,3}','Edad: ',ficha.text)
+
+        import ipdb;ipdb.set_trace()
 
         item.save()
 

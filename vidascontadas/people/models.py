@@ -60,6 +60,7 @@ class People(models.Model):
                                max_length=100)
     genre = models.CharField(_('Genre'), null=False, choices=GENRE_CHOICES,
                                 default=GENRE_CHOICES[0][0], max_length=2)
+    age = models.IntegerField(_('Age'), null=False, default=0)
     profession = models.CharField(_('Profession'), null=False, blank=True,
                                   max_length=75)
     date_birth = models.ForeignKey('common.CustomDate',
