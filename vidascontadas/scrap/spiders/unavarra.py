@@ -18,8 +18,8 @@ def extract_text(expression, text):
     re_result = re.search(expression, text, re.M|re.I|re.U)
     return re_result.groups()[0] if re_result else ""
 
-class DemoSpider(CrawlSpider):
-    name = 'base'
+class UnavarraSpider(CrawlSpider):
+    name = 'unavarra'
     allowed_domains = ['memoria-oroimena.unavarra.es', ]
 
     start_urls = [
