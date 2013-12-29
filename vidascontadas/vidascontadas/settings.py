@@ -155,6 +155,13 @@ INSTALLED_APPS = (
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
+
+#django_cities_light
+
+COUNTRIES_TO_IMPORT = ('ES')
+
+CITIES_LIGHT_CITY_SOURCES = ['http://download.geonames.org/export/dump/ES.zip']
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.

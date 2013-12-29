@@ -1,18 +1,17 @@
 #coding=utf-8
-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
 class Place(models.Model):
-    city = models.ForeignKey('cities_light.City', null=False)
+    city = models.ForeignKey('cities_light.City', null=True)
     name = models.CharField(_('Name'), max_length=100, null=False)
     place_type = models.CharField(_('Place type'), max_length=50, null=False,
                                   blank=True)
     latitude = models.DecimalField(max_digits=8, decimal_places=5, null=False,
-                                   blank=True)
+                                   blank=True, default=0.0)
     longitude = models.DecimalField(max_digits=8, decimal_places=5, null=False,
-                                   blank=True)
+                                   blank=True, default=0.0)
     medias = models.ManyToManyField('medias.Media')
 
     class Meta:
